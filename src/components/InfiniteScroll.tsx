@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react'
 
 type PropsType = {
 	children: React.ReactNode
-	isLoading: boolean
+	isFetching: boolean
 	fetchNextPage: () => void
 	isLastPage?: boolean
 }
 
 export const InfiniteScroll = ({
 	children,
-	isLoading,
+	isFetching,
 	fetchNextPage,
 	isLastPage,
 }: PropsType) => {
@@ -17,11 +17,11 @@ export const InfiniteScroll = ({
 	const wrapperRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
-		if (!triggerRef.current || !wrapperRef.current) return
+		if (!triggerRef.current || !wrapperRef.current || isFetching) return
 
 		const observer = new IntersectionObserver(
 			entries => {
-				if (entries[0].isIntersecting && !isLoading) {
+				if (entries[0].isIntersecting) {
 					fetchNextPage()
 				}
 			},
@@ -33,7 +33,7 @@ export const InfiniteScroll = ({
 		return () => {
 			observer.disconnect()
 		}
-	}, [fetchNextPage, isLoading])
+	}, [fetchNextPage, isFetching])
 
 	return (
 		<div

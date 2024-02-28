@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { AIVideo } from "./components/AIVideo";
 import { InfiniteScroll, InfiniteScrollRef } from "./components/InfiniteScroll";
 import { PostItem } from "./components/PostItem";
@@ -6,6 +6,7 @@ import { useGetPosts } from "./hooks/useGetPosts";
 
 function App() {
   const { data, fetchNextPage, hasNextPage, isFetching } = useGetPosts(10);
+  const [isVisible, setIsVisible] = useState(true);
 
   const infiniteScrollRef = useRef<InfiniteScrollRef>(null);
 
@@ -13,9 +14,21 @@ function App() {
     fetchNextPage();
   }, [fetchNextPage]);
 
+  if (!isVisible) {
+    return (
+      <>
+        <div>Video is not visible</div>
+        <button onClick={() => setIsVisible((prev) => !prev)}>
+          Toggle Video
+        </button>
+      </>
+    );
+  }
+
   return (
     <div>
       <AIVideo refScrollUp={infiniteScrollRef} />
+
       <InfiniteScroll
         ref={infiniteScrollRef}
         isLastPage={!hasNextPage}
@@ -37,6 +50,9 @@ function App() {
           )}
         </div>
       </InfiniteScroll>
+      <button onClick={() => setIsVisible((prev) => !prev)}>
+        Toggle Video
+      </button>
     </div>
   );
 }

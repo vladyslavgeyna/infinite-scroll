@@ -46,18 +46,16 @@ export const InfiniteScroll = forwardRef<InfiniteScrollRef, PropsType>(
       () => ({
         scrollUp: () => {
           if (wrapperRef.current) {
-            const currentPosition = wrapperRef.current.scrollTop;
-            wrapperRef.current.scrollTo({
-              top: currentPosition - 100,
+            wrapperRef.current.scrollBy({
+              top: -100,
               behavior: "smooth",
             });
           }
         },
         scrollDown: () => {
           if (wrapperRef.current) {
-            const currentPosition = wrapperRef.current.scrollTop;
-            wrapperRef.current.scrollTo({
-              top: currentPosition + 100,
+            wrapperRef.current.scrollBy({
+              top: 100,
               behavior: "smooth",
             });
           }
